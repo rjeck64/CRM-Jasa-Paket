@@ -1,5 +1,6 @@
 <?php
   include 'db.php';
+  include 'check_session.php';
 
 // session_start();
 if (isset($_POST["Simpan"])) {
@@ -23,6 +24,13 @@ if (isset($_POST["Simpan"])) {
             </script>";
   }
 }
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT first_name, last_name FROM users WHERE id = '$user_id' LIMIT 1";
+    $result = $conn->query($sql);
+
+    $row = $result->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -179,7 +187,7 @@ if (isset($_POST["Simpan"])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $row["first_name"] ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -276,7 +284,7 @@ if (isset($_POST["Simpan"])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>

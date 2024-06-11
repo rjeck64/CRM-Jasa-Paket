@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'check_session.php';
 
 // Query data pengiriman
 $result = mysqli_query($conn, "SELECT
@@ -51,6 +52,12 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </td>
                 </tr>';
 }
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT first_name, last_name FROM users WHERE id = '$user_id' LIMIT 1";
+    $result1 = $conn->query($sql);
+
+    $row1 = $result1->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -206,7 +213,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $row1["first_name"] ?></span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -308,7 +315,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>

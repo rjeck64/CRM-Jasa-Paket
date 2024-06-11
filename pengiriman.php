@@ -1,5 +1,6 @@
 <?php
   include 'db.php';
+  include 'check_session.php';
   $result = mysqli_query($conn, "SELECT
 	pengiriman.shipment_id AS 'Id Pengiriman',
     pengiriman.tanggal_bongkar AS 'Tanggal Bongkar',
@@ -20,7 +21,15 @@ INNER JOIN
     driver ON pengiriman.driver_id = driver.driver_id
 INNER JOIN
     gudang ON pengiriman.asal_gudang_id = gudang.warehouse_id;");
+
+
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT first_name, last_name FROM users WHERE id = '$user_id' LIMIT 1";
+    $result1 = $conn->query($sql);
+
+    $row = $result1->fetch_assoc();
  ?>
+ 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -176,7 +185,7 @@ INNER JOIN
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $row["first_name"] ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -296,7 +305,7 @@ INNER JOIN
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
